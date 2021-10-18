@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SubwayStationTest {
 
@@ -24,7 +25,8 @@ public class SubwayStationTest {
             System.out.println(stations);
             reader.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            fail("file not found");
         }
 
          assertEquals("Astor Pl", stations.features.get(0).properties.getName());
