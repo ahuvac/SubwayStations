@@ -19,7 +19,7 @@ public class SubwayStationTest {
 
         try {
             Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("/Users/ahuvacheifetz/Downloads/SubwayStationApplication/src/main/resources/stations.json"));
+            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
             stations = gson.fromJson(reader,SubwayStations.class);
             System.out.println(stations);
             reader.close();
