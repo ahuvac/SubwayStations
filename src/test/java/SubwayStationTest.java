@@ -1,6 +1,8 @@
 import com.google.gson.Gson;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,20 +17,23 @@ public class SubwayStationTest {
 
 
     @Test
-    public void getName() {
-        SubwayStations stations = new SubwayStations();
-
+    public void getName() throws IOException {
+        //given
+        Gson gson = new Gson();
+        Reader reader = null;
         try {
-            Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
-            stations = gson.fromJson(reader,SubwayStations.class);
-            System.out.println(stations);
-            reader.close();
+            reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
         } catch (Exception ex) {
             //ex.printStackTrace();
             fail("file not found");
         }
 
-         assertEquals("Astor Pl", stations.features.get(0).properties.getName());
+        //when
+        SubwayStations stations = gson.fromJson(reader,SubwayStations.class);
+        String name = stations.features.get(0).properties.getName();
+        reader.close();
+
+        //then
+        assertEquals("Astor Pl", name);
     }
 }
