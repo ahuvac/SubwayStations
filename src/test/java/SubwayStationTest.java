@@ -20,18 +20,12 @@ public class SubwayStationTest {
     public void getName() throws IOException {
         //given
         Gson gson = new Gson();
-        Reader reader = null;
-        try {
-            reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
-        } catch (Exception ex) {
-            //ex.printStackTrace();
-            fail("file not found");
-        }
+        Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
+        SubwayStations stations = gson.fromJson(reader,SubwayStations.class);
+        reader.close();
 
         //when
-        SubwayStations stations = gson.fromJson(reader,SubwayStations.class);
         String name = stations.features.get(0).properties.getName();
-        reader.close();
 
         //then
         assertEquals("Astor Pl", name);
