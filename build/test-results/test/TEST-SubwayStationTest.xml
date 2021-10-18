@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="SubwayStationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-10-18T03:17:00" hostname="Ahuvas-Macbook-Pro.local" time="0.077">
-  <properties/>
-  <testcase name="getName" classname="SubwayStationTest" time="0.077"/>
-  <system-out><![CDATA[SubwayStations@2f8a26a5
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
