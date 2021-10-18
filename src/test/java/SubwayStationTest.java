@@ -18,26 +18,15 @@ public class SubwayStationTest {
         SubwayStations stations = new SubwayStations();
 
         try {
-            // create Gson instance
             Gson gson = new Gson();
-
-            // create a reader
             Reader reader = Files.newBufferedReader(Paths.get("/Users/ahuvacheifetz/Downloads/SubwayStationApplication/src/main/resources/stations.json"));
-
-            // convert JSON string to station object
             stations = gson.fromJson(reader,SubwayStations.class);
-
-            // print user object
             System.out.println(stations);
-
-            // close reader
             reader.close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
          assertEquals("Astor Pl", stations.features.get(0).properties.getName());
-
     }
 }
