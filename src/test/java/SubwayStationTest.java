@@ -21,13 +21,12 @@ public class SubwayStationTest {
         //given
         Gson gson = new Gson();
         Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
+
+        //when
         SubwayStations stations = gson.fromJson(reader,SubwayStations.class);
         reader.close();
 
-        //when
-        String name = stations.features.get(0).properties.getName();
-
         //then
-        assertEquals("Astor Pl", name);
+        assertEquals("Astor Pl", stations.features.get(0).properties.getName());
     }
 }
