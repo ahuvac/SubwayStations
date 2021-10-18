@@ -7,26 +7,28 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 public class SubwayStationTest {
 
 
 
     @Test
     public void getName() {
-        SubwayStations station = new SubwayStations();
-        System.out.println(station.features);
-
-        Map<?, ?> stations = new HashMap<>();
+        SubwayStations stations = new SubwayStations();
 
         try {
             // create Gson instance
             Gson gson = new Gson();
 
             // create a reader
-            Reader reader = Files.newBufferedReader(Paths.get("../resources/stations.json"));
+            Reader reader = Files.newBufferedReader(Paths.get("/Users/ahuvacheifetz/Downloads/SubwayStationApplication/src/main/resources/stations.json"));
 
-            // convert JSON file to map
-            stations = gson.fromJson(reader, Map.class);
+            // convert JSON string to station object
+            stations = gson.fromJson(reader,SubwayStations.class);
+
+            // print user object
+            System.out.println(stations);
 
             // close reader
             reader.close();
@@ -35,7 +37,7 @@ public class SubwayStationTest {
             ex.printStackTrace();
         }
 
-        // assertEquals("Astor Pl", stations.get('name'));
+         assertEquals("Astor Pl", stations.features.get(0).properties.getName());
 
     }
 }
