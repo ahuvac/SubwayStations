@@ -1,9 +1,9 @@
 import java.util.List;
 
-public class SubwayStations {
-    List<Features> features;
+public class SubwaySystem {
+    List<Station> features;
 
-    static class Features {
+    static class Station {
         Properties properties;
         Geometry geometry;
 
