@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class SubwayStations {
+public class SubwaySystem {
     List<Features> features;
 
     static class Features {
