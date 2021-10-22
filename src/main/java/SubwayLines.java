@@ -3,18 +3,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SubwayLines {
+public class SubwayLines extends HashMap<String, String[]> {
+    public ArrayList<String> getConnectedLines(SubwayLines lines, SubwaySystem system, String station) {
 
-    public Map<String, String[]> SubwayLines;
-
-    public ArrayList<String> getConnectedLines() {
-        SubwaySystem system = new SubwaySystem();
         ArrayList<String> connectedLines = new ArrayList<>();
-        for(String line: SubwayLines.keySet()){
-            for (String connection: SubwayLines.get(line)){
-                connectedLines.add(system.getNameFromID(Integer.parseInt(connection)));
-            }
+
+        for (String line : lines.get(station)){
+            connectedLines.add(system.getNameFromID(Integer.parseInt(line.toString())));
         }
+
         return connectedLines;
     }
 }
+
