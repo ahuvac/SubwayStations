@@ -21,9 +21,10 @@ public class SubwayStationTest {
         reader.close();
 
         //then
-        assertEquals("Astor Pl", stations.features.get(0).properties.getName());
+        assertEquals("Astor Pl", stations.features.get(0).properties.name);
         assertEquals("4-6-6 Express", stations.features.get(0).properties.line);
         assertNotNull(stations.features.get(0).geometry.coordinates);
+        assertEquals("Astor Pl", stations.getNameFromID(1));
 
     }
 }

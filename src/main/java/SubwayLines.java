@@ -6,10 +6,15 @@ import java.util.Map;
 public class SubwayLines {
 
     public Map<String, String[]> SubwayLines;
- 
-//    static ArrayList<String> getConnectedLines() {
-//        ArrayList<String> connectedLines = new ArrayList<>();
-//        connectedLines.add(null);
-//        return connectedLines;
-//    }
+
+    public ArrayList<String> getConnectedLines() {
+        SubwaySystem system = new SubwaySystem();
+        ArrayList<String> connectedLines = new ArrayList<>();
+        for(String line: SubwayLines.keySet()){
+            for (String connection: SubwayLines.get(line)){
+                connectedLines.add(system.getNameFromID(Integer.parseInt(connection)));
+            }
+        }
+        return connectedLines;
+    }
 }
