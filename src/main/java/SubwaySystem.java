@@ -26,13 +26,11 @@ public class SubwaySystem {
         }
 
         static class Geometry{
-
              List<Double> coordinates;
 
              public List getCoordinates() {
                 return coordinates;
               }
-
         }
 //        public List getConnections() {
 //            List<Station> Connections;// (List of Stations that this station is connected to)

@@ -14,7 +14,7 @@ public class SubwayStationTest {
     public void jsonToStations() throws IOException {
         //given
         Gson gson = new Gson();
-        Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
+        Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
 
         //when
         SubwaySystem stations = gson.fromJson(reader, SubwaySystem.class);
