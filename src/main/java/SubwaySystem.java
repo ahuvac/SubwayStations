@@ -28,7 +28,7 @@ public class SubwaySystem {
         static class Geometry {
             List<Double> coordinates;
 
-            public List getCoordinates() {
+            public List<Double> getCoordinates() {
                 return coordinates;
             }
 
@@ -44,7 +44,7 @@ public class SubwaySystem {
         return -1;
     }
 
-    public List getCoordinates(String name) {
+    public List<Double> getCoordinates(String name) {
         for (int i = 0; i < features.size(); i++) {
             if (features.get(i).properties.name.equals(name)) {
                 return features.get(i).geometry.coordinates;
@@ -58,16 +58,16 @@ public class SubwaySystem {
         for (int i = 0; i < features.size(); i++) {
             if (features.get(i).properties.name.equals(name)) {
                 lines = features.get(i).properties.line;
+                return lines.split("-");
             }
         }
-        assert lines != null;
-        return lines.split("-");
+        return null;
     }
 
     public String getNameFromID(int id) {
-        for (int i = 0; i < features.size(); i++) {
-            if (features.get(i).properties.objectid == id) {
-                return features.get(i).properties.name;
+        for (Station station : features) {
+            if (station.properties.objectid == id) {
+                return station.properties.name;
             }
         }
         return null;

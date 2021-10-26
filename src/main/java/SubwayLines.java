@@ -2,19 +2,22 @@ import java.util.*;
 
 public class SubwayLines extends HashMap<String, String[]> {
 
-    public ArrayList<String> getConnectedStations(SubwayLines lines, SubwaySystem system, String stationName) {
+
+    public ArrayList<String> getConnectedStations(SubwaySystem system, String stationName) {
+
         ArrayList<String> connections = new ArrayList<>();
         String[] linesAtStation = system.getLines(stationName);
 
         for (String line : linesAtStation){
-            String[] stations = lines.get(line);
+            String[] stations = this.get(line);
             for(int i = 0; i< stations.length; i++){
                 String previous = stations[i];
                 if(stations.length > i + 1) {
                     String current = stations[i + 1];
-                    if (previous.equals(system.getIDFromName(stationName) + "")) {
+                    String stationId = system.getIDFromName(stationName) + "";
+                    if (previous.equals( stationId)) {
                         connections.add(current);
-                    } else if (current.equals(system.getIDFromName(stationName) + "")) {
+                    } else if (current.equals(stationId)) {
                         connections.add(previous);
                         if(stations.length > i+2) {
                             connections.add(stations[i + 2]);
