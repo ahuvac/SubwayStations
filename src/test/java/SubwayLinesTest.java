@@ -40,20 +40,17 @@ public class SubwayLinesTest {
 
         //then
 
-        ArrayList<String> connectionsBeach = lineList.getConnectedStations(stationList, "Far Rockaway - Mott Ave");
+        ArrayList<SubwaySystem.Station> connectionsBeach = lineList.getConnectedStations(stationList, 55);
 
         assertNotNull(connectionsBeach);
         assertEquals(1, connectionsBeach.size());
-        assertEquals("Beach 25th St",stationList.getNameFromID(Integer.parseInt(connectionsBeach.get(0))));
+        assertEquals(186, connectionsBeach.get(0).properties.objectid);
 
 
 
-        ArrayList<String> connections59 = lineList.getConnectedStations(stationList, "Beach 25th St");
+        ArrayList<SubwaySystem.Station> connections59 = lineList.getConnectedStations(stationList, 186);
         assertNotNull(connections59.get(0));
-        assertEquals("Far Rockaway - Mott Ave", stationList.getNameFromID(Integer.parseInt(connections59.get(0))));
+        assertEquals(55,connections59.get(0).properties.objectid);
 
-
-        ArrayList<String> connectionsAstor = lineList.getConnectedStations(stationList,"Astor Pl");
-        assertTrue(connectionsAstor.contains("457"));
     }
 }

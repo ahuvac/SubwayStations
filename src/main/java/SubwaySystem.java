@@ -1,6 +1,7 @@
 import java.util.List;
 
 public class SubwaySystem {
+
     List<Station> features;
 
     static class Station {
@@ -53,10 +54,10 @@ public class SubwaySystem {
         return null;
     }
 
-    public String[] getLines(String name) {
+    public String[] getLines(int id) {
         String lines = null;
         for (int i = 0; i < features.size(); i++) {
-            if (features.get(i).properties.name.equals(name)) {
+            if (features.get(i).properties.objectid == id) {
                 lines = features.get(i).properties.line;
                 return lines.split("-");
             }
