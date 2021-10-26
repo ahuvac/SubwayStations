@@ -33,9 +33,35 @@ public class SubwaySystem {
             }
 
         }
-//        public List getConnections() {
-//            List<Station> Connections;// (List of Stations that this station is connected to)
-//        }
+    }
+
+    public int getIDFromName(String name) {
+        for (int i = 0; i < features.size(); i++) {
+            if (features.get(i).properties.name.equals(name)) {
+                return features.get(i).properties.objectid;
+            }
+        }
+        return -1;
+    }
+
+    public List getCoordinates(String name) {
+        for (int i = 0; i < features.size(); i++) {
+            if (features.get(i).properties.name.equals(name)) {
+                return features.get(i).geometry.coordinates;
+            }
+        }
+        return null;
+    }
+
+    public String[] getLines(String name) {
+        String lines = null;
+        for (int i = 0; i < features.size(); i++) {
+            if (features.get(i).properties.name.equals(name)) {
+                lines = features.get(i).properties.line;
+            }
+        }
+        assert lines != null;
+        return lines.split("-");
     }
 
     public String getNameFromID(int id) {
@@ -47,9 +73,29 @@ public class SubwaySystem {
         return null;
     }
 
-
-
+//    public Double getDistance(int stationId1, int stationId2) {
+//        int index1 = 0;
+//        int index2 = 0;
+//
+//        for (int i = 0; i < features.size(); i++) {
+//
+//            if (features.get(i).properties.objectid == stationId1) {
+//                index1 = i;
+//            } else if (features.get(i).properties.objectid == stationId2) {
+//                index2 = i;
+//            }
+//            return (Math.sqrt(
+//                    Math.pow(features.get(index2).geometry.coordinates.get(0)
+//                            - features.get(index1).geometry.coordinates.get(0), 2)
+//                            +
+//                            Math.pow(features.get(index2).geometry.coordinates.get(1)
+//                                    - features.get(index1).geometry.coordinates.get(1), 2)));
+//        }
+//
+//        return 0.0;
+//    }
 }
+
 
 
 

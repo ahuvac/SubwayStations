@@ -21,12 +21,11 @@ public class SubwayLinesTest {
         reader.close();
 
         //then
-        //System.out.println(lineList.get("1").length);
         assertNotNull(lineList);
     }
 
     @Test
-    public void getConnectedLines() throws IOException {
+    public void getLines() throws IOException {
         //given
         Gson gson = new Gson();
         Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
@@ -36,17 +35,22 @@ public class SubwayLinesTest {
         SubwayLines lineList = gson.fromJson(lineReader, SubwayLines.class);
         SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
 
-        Parser parser = new Parser();
         lineReader.close();
         stationReader.close();
 
         //then
 
-//        ArrayList connections = lineList.getConnectedLines(lineList, stationList, "Astor Pl");
-//        assertEquals(connections.get(0), "1");
+        ArrayList<String> connections = lineList.getConnectedStations(lineList, stationList, "Far Rockaway - Mott Ave");
+
+        assertNotNull(connections);
+        assertEquals(1, connections.size());
+        assertEquals("Beach 25th St",stationList.getNameFromID(Integer.parseInt(connections.get(0))));
+
+
+
+        ArrayList<String> connections59 = lineList.getConnectedStations(lineList, stationList, "Beach 25th St");
+        assertNotNull(connections59.get(0));
+        assertEquals("Far Rockaway - Mott Ave", stationList.getNameFromID(Integer.parseInt(connections59.get(0))));
+
     }
-
-
-
-
 }

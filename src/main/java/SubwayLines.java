@@ -1,18 +1,28 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SubwayLines extends HashMap<String, String[]> {
-    public ArrayList<String> getConnectedLines(SubwayLines lines, SubwaySystem system, String station) {
 
-        ArrayList<String> connectedLines = new ArrayList<>();
+    public ArrayList<String> getConnectedStations(SubwayLines lines, SubwaySystem system, String stationName) {
+        ArrayList<String> connections = new ArrayList<>();
+        String[] linesAtStation = system.getLines(stationName);
 
-        for (String line : lines.get(station)){
-            connectedLines.add(system.getNameFromID(Integer.parseInt(line.toString())));
+        for (String line : linesAtStation){
+            String[] stations = lines.get(line);
+            for(int i = 0; i< stations.length; i++){
+                String previous = stations[i];
+                if(stations.length > i + 1) {
+                    String current = stations[i + 1];
+                    if (previous.equals(system.getIDFromName(stationName) + "")) {
+                        connections.add(current);
+                    } else if (current.equals(system.getIDFromName(stationName) + "")) {
+                        connections.add(previous);
+                        if(stations.length > i+2) {
+                            connections.add(stations[i + 2]);
+                        }
+                    }
+                }
+           }
         }
-
-        return connectedLines;
+        return connections;
     }
 }
-
