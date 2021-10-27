@@ -6,8 +6,8 @@ public class SubwayLines extends HashMap<String, int[]> {
 
     public Map<Integer, SubwaySystem.Station> getStations(SubwaySystem system){
         Map<Integer, SubwaySystem.Station> stationMap= new HashMap<>();
-        for(int i = 0; i < system.features.size(); i++){
-            stationMap.put(system.features.get(i).properties.objectid, system.features.get(i));
+        for(SubwaySystem.Station station : system.features){
+            stationMap.put(station.properties.objectid, station);
         }
         return stationMap;
     }
