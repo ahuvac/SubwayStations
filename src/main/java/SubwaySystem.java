@@ -46,9 +46,9 @@ public class SubwaySystem {
     }
 
     public List<Double> getCoordinates(String name) {
-        for (int i = 0; i < features.size(); i++) {
-            if (features.get(i).properties.name.equals(name)) {
-                return features.get(i).geometry.coordinates;
+        for (Station station : features) {
+            if (station.properties.name.equals(name)) {
+                return station.geometry.coordinates;
             }
         }
         return null;
@@ -56,10 +56,9 @@ public class SubwaySystem {
 
     public String[] getLines(int id) {
         String lines = null;
-        for (int i = 0; i < features.size(); i++) {
-            if (features.get(i).properties.objectid == id) {
-                lines = features.get(i).properties.line;
-                return lines.split("-");
+        for (Station station : features) {
+            if (station.properties.objectid == id) {
+                return station.properties.line.split("-");
             }
         }
         return null;
