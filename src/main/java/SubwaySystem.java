@@ -73,27 +73,6 @@ public class SubwaySystem {
         return null;
     }
 
-//    public Double getDistance(int stationId1, int stationId2) {
-//        int index1 = 0;
-//        int index2 = 0;
-//
-//        for (int i = 0; i < features.size(); i++) {
-//
-//            if (features.get(i).properties.objectid == stationId1) {
-//                index1 = i;
-//            } else if (features.get(i).properties.objectid == stationId2) {
-//                index2 = i;
-//            }
-//            return (Math.sqrt(
-//                    Math.pow(features.get(index2).geometry.coordinates.get(0)
-//                            - features.get(index1).geometry.coordinates.get(0), 2)
-//                            +
-//                            Math.pow(features.get(index2).geometry.coordinates.get(1)
-//                                    - features.get(index1).geometry.coordinates.get(1), 2)));
-//        }
-//
-//        return 0.0;
-//    }
 }
 
 
