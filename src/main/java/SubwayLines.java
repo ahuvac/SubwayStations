@@ -12,23 +12,29 @@ public class SubwayLines extends HashMap<String, int[]> {
 
         Map<Integer, SubwaySystem.Station> stationMap = system.getStations(system);
 
+        Iterator<Entry<Integer, SubwaySystem.Station>> it = stationMap.entrySet().iterator();
+
         for (String line : linesAtStation){
+
             int[] stations = this.get(line);
-            for(int i = 0; i < stations.length; i++){
-                int previous = stations[i];
-                if(stations.length > i + 1) {
-                    int current = stations[i + 1];
-                    if (previous == station) {
+
+            if (it.hasNext()) {
+                Entry<Integer, SubwaySystem.Station> previous = it.next();
+
+                if (it.hasNext()) {
+                    Entry<Integer, SubwaySystem.Station> current = it.next();
+                    if (previous.getValue().properties.objectid == station) {
                         connections.add(stationMap.get(current));
-                    } else if (current == station) {
+                    } else if (current.getValue().properties.objectid == station) {
                         connections.add(stationMap.get(previous));
-                        if(i + 1 != stations.length - 1) { //checking that its not the last station in the list
-                            connections.add(stationMap.get(stations[i + 2]));
+                        if(it.hasNext()){
+                            connections.add(stationMap.get(it.next()));
                         }
                     }
                 }
            }
         }
+
         return connections;
     }
 }
