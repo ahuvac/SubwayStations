@@ -4,19 +4,13 @@ public class SubwayLines extends HashMap<String, int[]> {
 
 
 
-    public Map<Integer, SubwaySystem.Station> getStations(SubwaySystem system){
-        Map<Integer, SubwaySystem.Station> stationMap= new HashMap<>();
-        for(SubwaySystem.Station station : system.features){
-            stationMap.put(station.properties.objectid, station);
-        }
-        return stationMap;
-    }
+
 
     public ArrayList<SubwaySystem.Station> getConnectedStations(SubwaySystem system, int station) {
         ArrayList<SubwaySystem.Station> connections = new ArrayList<>();
         String[] linesAtStation = system.getLines(station);
 
-        Map<Integer, SubwaySystem.Station> stationMap = this.getStations(system);
+        Map<Integer, SubwaySystem.Station> stationMap = system.getStations(system);
 
         for (String line : linesAtStation){
             int[] stations = this.get(line);
@@ -28,7 +22,7 @@ public class SubwayLines extends HashMap<String, int[]> {
                         connections.add(stationMap.get(current));
                     } else if (current == station) {
                         connections.add(stationMap.get(previous));
-                        if(stations.length > i+2) {
+                        if(i + 1 != stations.length - 1) { //checking that its not the last station in the list
                             connections.add(stationMap.get(stations[i + 2]));
                         }
                     }

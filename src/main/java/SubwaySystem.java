@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubwaySystem {
 
@@ -36,10 +38,18 @@ public class SubwaySystem {
         }
     }
 
+    public Map<Integer, Station> getStations(SubwaySystem system){
+        Map<Integer, SubwaySystem.Station> stationMap= new HashMap<>();
+        for(SubwaySystem.Station station : system.features){
+            stationMap.put(station.properties.objectid, station);
+        }
+        return stationMap;
+    }
+
     public int getIDFromName(String name) {
-        for (int i = 0; i < features.size(); i++) {
-            if (features.get(i).properties.name.equals(name)) {
-                return features.get(i).properties.objectid;
+        for (Station station : features) {
+            if (station.properties.name.equals(name)) {
+                return station.properties.objectid;
             }
         }
         return -1;
