@@ -39,7 +39,7 @@ public class SubwaySystem {
     }
 
     public Map<Integer, Station> getStations(SubwaySystem system){
-        Map<Integer, SubwaySystem.Station> stationMap= new HashMap<>();
+        Map<Integer, SubwaySystem.Station> stationMap = new HashMap<>();
         for(SubwaySystem.Station station : system.features){
             stationMap.put(station.properties.objectid, station);
         }
