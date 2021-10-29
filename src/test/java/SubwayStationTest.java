@@ -13,12 +13,10 @@ public class SubwayStationTest {
     @Test
     public void jsonToStations() throws IOException {
         //given
-        Gson gson = new Gson();
-        Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/stations.json"));
+        jsonParser parser = new jsonParser();
 
         //when
-        SubwaySystem stations = gson.fromJson(reader, SubwaySystem.class);
-        reader.close();
+        SubwaySystem stations = parser.parseStationsJSON();
 
         //then
         assertEquals("Astor Pl", stations.features.get(0).properties.getName());
