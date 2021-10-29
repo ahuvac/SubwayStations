@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,20 @@ public class SubwaySystem {
     static class Station {
         Properties properties;
         Geometry geometry;
+        List<Station> connections;
+
+        public List<Station> getConnections() {
+            return connections;
+        }
+
+        public Station() {
+            this.connections = new ArrayList<>();
+        }
+
+        public void connect(Station station) {
+            this.connections.add(station);
+            station.connections.add(this);
+        }
 
         static class Properties {
             int objectid;
@@ -35,6 +50,15 @@ public class SubwaySystem {
                 return coordinates;
             }
 
+        }
+    }
+
+    public void connectStations(SubwayLines lines) {
+        for (String line : lines.keySet()) {
+            int[] stationsOfLine = lines.get(line);
+            for (int i = 0; i < stationsOfLine.length - 1; i++) {
+                this.features.get(i).connect(this.features.get(i + 1));
+            }
         }
     }
 
