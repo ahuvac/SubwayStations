@@ -35,31 +35,24 @@ public class SubwaySystemTest {
         Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
         Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
 
-        //when
         SubwayLines lineList = gson.fromJson(lineReader, SubwayLines.class);
         SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
 
         lineReader.close();
         stationReader.close();
 
-        //then
+        //when
         stationList.connectStations(lineList);
-        List<SubwaySystem.Station> connectionsAstor = stationList.features.get(0).getConnections();
 
-        assertNotNull(connectionsAstor);
-        //assertEquals(connectedList.features.get(0).properties.name, "Astor Pl");
-        //assertEquals(25, connectionsAstor.size());
-        // assertTrue(connectionsAstor.contains(457));
-        for(SubwaySystem.Station s : connectionsAstor)
-            System.out.println(s.properties.name);
+        //then
+        List<SubwaySystem.Station> connections = stationList.features.get(56).getConnections();
+        assertNotNull(connections);
+        assertEquals(165, connections.get(0).properties.objectid);
 
-        assertEquals(457, connectionsAstor.get(0).properties.objectid);
-
-        List<SubwaySystem.Station> connections59 = stationList.features.get(186).connections;
+        List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
         assertNotNull(connections59.get(0));
-        assertEquals(55,connections59.get(0).properties.objectid);
+        assertEquals(3,connections59.get(0).properties.objectid);
 
     }
-
 
 }

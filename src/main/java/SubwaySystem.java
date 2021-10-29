@@ -54,10 +54,11 @@ public class SubwaySystem {
     }
 
     public void connectStations(SubwayLines lines) {
+        Map<Integer, Station> map = this.getStations(this);
         for (String line : lines.keySet()) {
             int[] stationsOfLine = lines.get(line);
             for (int i = 0; i < stationsOfLine.length - 1; i++) {
-                this.features.get(i).connect(this.features.get(i + 1));
+                map.get(stationsOfLine[i]).connect(map.get(stationsOfLine[i + 1]));;
             }
         }
     }
