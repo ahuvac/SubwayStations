@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -25,13 +26,13 @@ public class SubwaySystemTest {
         assertEquals("Astor Pl", stations.features.get(0).properties.name);
         assertEquals("4-6-6 Express", stations.features.get(0).properties.line);
         assertNotNull(stations.features.get(0).geometry.coordinates);
-        assertEquals(1, stations.getIDFromName("Astor Pl"));
 
     }
     @Test
     public void getLines() throws IOException {
         //given
         Gson gson = new Gson();
+
         Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
         Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
 
@@ -41,15 +42,16 @@ public class SubwaySystemTest {
         lineReader.close();
         stationReader.close();
 
+        Map<Integer, SubwaySystem.Station> stations = stationList.getStationMap();
+
         //when
-        stationList.connectStations(lineList);
+        List<SubwaySystem.Station> connections = stationList.features.get(56).getConnections(stations,lineList);
+        List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
 
         //then
-        List<SubwaySystem.Station> connections = stationList.features.get(56).getConnections();
         assertNotNull(connections);
         assertEquals(165, connections.get(0).properties.objectid);
 
-        List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
         assertNotNull(connections59.get(0));
         assertEquals(3,connections59.get(0).properties.objectid);
 

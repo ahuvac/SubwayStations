@@ -12,7 +12,13 @@ public class SubwaySystem {
         Geometry geometry;
         List<Station> connections;
 
-        public List<Station> getConnections() {
+        public List<Station> getConnections(Map<Integer, Station> stations, SubwayLines lines) {
+            for (String line : lines.keySet()) {
+                int[] stationsOfLine = lines.get(line);
+                for (int i = 0; i < stationsOfLine.length - 1; i++) {
+                    stations.get(stationsOfLine[i]).connect(stations.get(stationsOfLine[i + 1]));
+                }
+            }
             return connections;
         }
 
@@ -24,7 +30,6 @@ public class SubwaySystem {
             this.connections.add(station);
             station.connections.add(this);
         }
-
 
         static class Properties {
             int objectid;
@@ -70,17 +75,8 @@ public class SubwaySystem {
         }
         return closest;
     }
-    public void connectStations(SubwayLines lines) {
-        Map<Integer, Station> map = this.getStations();
-        for (String line : lines.keySet()) {
-            int[] stationsOfLine = lines.get(line);
-            for (int i = 0; i < stationsOfLine.length - 1; i++) {
-                map.get(stationsOfLine[i]).connect(map.get(stationsOfLine[i + 1]));;
-            }
-        }
-    }
 
-    public Map<Integer, Station> getStations(){
+    public Map<Integer, Station> getStationMap(){
         Map<Integer, SubwaySystem.Station> stationMap = new HashMap<>();
         for(SubwaySystem.Station station : this.features){
             stationMap.put(station.properties.objectid, station);
@@ -88,42 +84,6 @@ public class SubwaySystem {
         return stationMap;
     }
 
-    public int getIDFromName(String name) {
-        for (Station station : features) {
-            if (station.properties.name.equals(name)) {
-                return station.properties.objectid;
-            }
-        }
-        return -1;
-    }
-
-    public List<Double> getCoordinates(String name) {
-        for (Station station : features) {
-            if (station.properties.name.equals(name)) {
-                return station.geometry.coordinates;
-            }
-        }
-        return null;
-    }
-
-    public String[] getLines(int id) {
-        String lines = null;
-        for (Station station : features) {
-            if (station.properties.objectid == id) {
-                return station.properties.line.split("-");
-            }
-        }
-        return null;
-    }
-
-    public String getNameFromID(int id) {
-        for (Station station : features) {
-            if (station.properties.objectid == id) {
-                return station.properties.name;
-            }
-        }
-        return null;
-    }
 
 }
 
