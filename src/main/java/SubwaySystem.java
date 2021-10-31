@@ -25,6 +25,7 @@ public class SubwaySystem {
             station.connections.add(this);
         }
 
+
         static class Properties {
             int objectid;
             String name;
@@ -45,6 +46,12 @@ public class SubwaySystem {
 
         static class Geometry {
             List<Double> coordinates;
+            Coordinates coords;
+
+            public Coordinates getCoords(){
+                this.coords = new Coordinates(coordinates.get(0), coordinates.get(1));
+                return coords;
+            }
 
             public List<Double> getCoordinates() {
                 return coordinates;
@@ -53,8 +60,18 @@ public class SubwaySystem {
         }
     }
 
+    public Station findClosestStation(Coordinates coords){
+        Station closest = this.features.get(0);
+
+        for(Station station : this.features){
+            if(station.geometry.getCoords().getDistance(coords) < closest.geometry.getCoords().getDistance(coords)){
+                closest = station;
+            }
+        }
+        return closest;
+    }
     public void connectStations(SubwayLines lines) {
-        Map<Integer, Station> map = this.getStations(this);
+        Map<Integer, Station> map = this.getStations();
         for (String line : lines.keySet()) {
             int[] stationsOfLine = lines.get(line);
             for (int i = 0; i < stationsOfLine.length - 1; i++) {
@@ -63,9 +80,9 @@ public class SubwaySystem {
         }
     }
 
-    public Map<Integer, Station> getStations(SubwaySystem system){
+    public Map<Integer, Station> getStations(){
         Map<Integer, SubwaySystem.Station> stationMap = new HashMap<>();
-        for(SubwaySystem.Station station : system.features){
+        for(SubwaySystem.Station station : this.features){
             stationMap.put(station.properties.objectid, station);
         }
         return stationMap;

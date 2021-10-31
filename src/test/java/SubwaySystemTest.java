@@ -55,4 +55,20 @@ public class SubwaySystemTest {
 
     }
 
+
+    @Test
+    public void findClosestStation() throws IOException {
+        //given
+        Gson gson = new Gson();
+        Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
+        SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
+        stationReader.close();
+
+        //when
+        Coordinates coordinates = new Coordinates( -73.90087000018523, 40.88466700064976);
+
+        //then
+        assertEquals(6, stationList.findClosestStation(coordinates).properties.objectid);
+    }
+
 }
