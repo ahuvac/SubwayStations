@@ -44,8 +44,10 @@ public class SubwaySystemTest {
 
         Map<Integer, SubwaySystem.Station> stations = stationList.getStationMap();
 
+
         //when
-        List<SubwaySystem.Station> connections = stationList.features.get(56).getConnections(stations,lineList);
+        stationList.connectStations(lineList, stations);
+        List<SubwaySystem.Station> connections = stationList.features.get(56).connections;
         List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
 
         //then

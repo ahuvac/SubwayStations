@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SubwaySystem {
 
@@ -12,19 +9,10 @@ public class SubwaySystem {
         Geometry geometry;
         List<Station> connections;
 
-        public List<Station> getConnections(Map<Integer, Station> stations, SubwayLines lines) {
-            for (String line : lines.keySet()) {
-                int[] stationsOfLine = lines.get(line);
-                for (int i = 0; i < stationsOfLine.length - 1; i++) {
-                    stations.get(stationsOfLine[i]).connect(stations.get(stationsOfLine[i + 1]));
-                }
-            }
-            return connections;
-        }
-
         public Station() {
             this.connections = new ArrayList<>();
         }
+
 
         public void connect(Station station) {
             this.connections.add(station);
@@ -84,7 +72,72 @@ public class SubwaySystem {
         return stationMap;
     }
 
+    public int getIDFromName(String name) {
+        for (Station station : features) {
+            if (station.properties.name.equals(name)) {
+                return station.properties.objectid;
+            }
+        }
+        return -1;
+    }
 
+    public void connectStations(SubwayLines lines, Map<Integer, Station> stations) {
+        for (String line : lines.keySet()) {
+            int[] stationsOfLine = lines.get(line);
+            for (int i = 0; i < stationsOfLine.length - 1; i++) {
+                stations.get(stationsOfLine[i]).connect(stations.get(stationsOfLine[i + 1]));
+            }
+        }
+    }
+
+//    public List<Integer> findShortestPath(Coordinates start, Coordinates end){
+//
+//    }
+//    public class Node {
+//
+//        private String name;
+//
+//        private List<Node> shortestPath = new LinkedList<>();
+//
+//        private Integer distance = Integer.MAX_VALUE;
+//
+//        Map<Node, Integer> adjacentNodes = new HashMap<>();
+//
+//        public void addDestination(Node destination, int distance) {
+//            adjacentNodes.put(destination, distance);
+//        }
+//
+//        public Node(String name) {
+//            this.name = name;
+//        }
+//
+//        // getters and setters
+//    }
+
+//    public  List<Integer> findShortestPath(List<Integer> connections, Coordinates start, Coordinates end) {
+//        source.setDistance(0);
+//
+//        Set<Node> settledNodes = new HashSet<>();
+//        Set<Node> unsettledNodes = new HashSet<>();
+//
+//        unsettledNodes.add(source);
+//
+//        while (unsettledNodes.size() != 0) {
+//            Node currentNode = getLowestDistanceNode(unsettledNodes);
+//            unsettledNodes.remove(currentNode);
+//            for (Entry < Node, Integer> adjacencyPair:
+//                    currentNode.getAdjacentNodes().entrySet()) {
+//                Node adjacentNode = adjacencyPair.getKey();
+//                Integer edgeWeight = adjacencyPair.getValue();
+//                if (!settledNodes.contains(adjacentNode)) {
+//                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
+//                    unsettledNodes.add(adjacentNode);
+//                }
+//            }
+//            settledNodes.add(currentNode);
+//        }
+//        return graph;
+//    }
 }
 
 
