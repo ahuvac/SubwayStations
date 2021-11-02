@@ -75,4 +75,20 @@ public class SubwaySystemTest {
         assertEquals(6, stationList.findClosestStation(coordinates).properties.objectid);
     }
 
+
+    @Test
+    public void findShortestPath() throws IOException {
+        //given
+        Gson gson = new Gson();
+        Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
+        SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
+        stationReader.close();
+        SubwayGraph graph = new SubwayGraph(stationList);
+
+        //when
+        List<StationNode> connects = stationList.findShortestPath(graph, stationList.features.get(93), stationList.features.get(79));
+
+        //then
+        //assertEquals(3,connects.get(0).station.properties.objectid);
+    }
 }

@@ -19,6 +19,10 @@ public class SubwaySystem {
             station.connections.add(this);
         }
 
+//        public Map<Object, Object> getAdjacentStations() {
+//
+//        }
+
         static class Properties {
             int objectid;
             String name;
@@ -90,54 +94,44 @@ public class SubwaySystem {
         }
     }
 
-//    public List<Integer> findShortestPath(Coordinates start, Coordinates end){
 //
-//    }
-//    public class Node {
-//
-//        private String name;
-//
-//        private List<Node> shortestPath = new LinkedList<>();
-//
-//        private Integer distance = Integer.MAX_VALUE;
-//
-//        Map<Node, Integer> adjacentNodes = new HashMap<>();
-//
-//        public void addDestination(Node destination, int distance) {
-//            adjacentNodes.put(destination, distance);
-//        }
-//
-//        public Node(String name) {
-//            this.name = name;
-//        }
-//
-//        // getters and setters
-//    }
+    public List<StationNode> findShortestPath(SubwayGraph graph, Station start, Station end) {
 
-//    public  List<Integer> findShortestPath(List<Integer> connections, Coordinates start, Coordinates end) {
-//        source.setDistance(0);
-//
-//        Set<Node> settledNodes = new HashSet<>();
-//        Set<Node> unsettledNodes = new HashSet<>();
-//
-//        unsettledNodes.add(source);
-//
-//        while (unsettledNodes.size() != 0) {
-//            Node currentNode = getLowestDistanceNode(unsettledNodes);
-//            unsettledNodes.remove(currentNode);
-//            for (Entry < Node, Integer> adjacencyPair:
-//                    currentNode.getAdjacentNodes().entrySet()) {
-//                Node adjacentNode = adjacencyPair.getKey();
-//                Integer edgeWeight = adjacencyPair.getValue();
-//                if (!settledNodes.contains(adjacentNode)) {
-//                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
-//                    unsettledNodes.add(adjacentNode);
-//                }
-//            }
-//            settledNodes.add(currentNode);
-//        }
-//        return graph;
-//    }
+        List<StationNode> unvisitedStations = graph.getNodes();
+        List<StationNode> visitedStations = new ArrayList<>();
+        StationNode sourceStation = graph.map.get(start);
+        sourceStation.setDistance(0);
+        //StationNode finalStation = map.get(end);
+        visitedStations.add(sourceStation);
+        while (unvisitedStations.size() != 0) {
+            StationNode currentStation = unvisitedStations.get(unvisitedStations.size() - 1); //gets the last unvisited station
+            unvisitedStations.remove(currentStation);
+            for (Map.Entry< StationNode, Integer> adjacencyPair:
+                    currentStation.getAdjacentNodes().entrySet()) {
+                StationNode adjacentNode = adjacencyPair.getKey();
+                Integer edgeWeight = adjacencyPair.getValue();
+                if (!visitedStations.contains(adjacentNode)) {
+                    calculateMinimumDistance(currentStation, adjacentNode, edgeWeight);
+                    unvisitedStations.add(adjacentNode);
+                }
+            }
+            visitedStations.add(currentStation);
+        }
+        return visitedStations;
+    }
+
+    private static void calculateMinimumDistance( StationNode sourceNode, StationNode evaluationNode, double edgeWeight)
+    {
+        double sourceDistance = sourceNode.getDistance();
+        if (sourceDistance + edgeWeight < evaluationNode.getDistance())
+        {
+            evaluationNode.setDistance(sourceDistance + edgeWeight);
+            LinkedList<StationNode> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
+            shortestPath.add(sourceNode);
+            evaluationNode.setShortestPath(shortestPath);
+        }
+    }
+
 }
 
 
