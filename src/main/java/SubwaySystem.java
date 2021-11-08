@@ -109,6 +109,7 @@ public class SubwaySystem {
 
     private List<Station> backtrackPath(Map<Station, Integer> distances, Station sourceStation, Station finalStation) {
         List<Station> shortestPath = new ArrayList<>();
+        shortestPath.add(finalStation);
         Station current = finalStation;
         while(!current.equals(sourceStation)){
             Station shortestStation = getClosestStation(current.connections, distances);
@@ -116,7 +117,6 @@ public class SubwaySystem {
             current = shortestStation;
         }
         Collections.reverse(shortestPath);
-        shortestPath.add(finalStation);
         return shortestPath;
     }
 
