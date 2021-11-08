@@ -13,15 +13,10 @@ public class SubwaySystem {
             this.connections = new ArrayList<>();
         }
 
-
         public void connect(Station station) {
             this.connections.add(station);
             station.connections.add(this);
         }
-
-//        public Map<Object, Object> getAdjacentStations() {
-//
-//        }
 
         static class Properties {
             int objectid;
@@ -57,15 +52,10 @@ public class SubwaySystem {
         }
     }
 
-    public Station findClosestStation(Coordinates coords){
-        Station closest = this.features.get(0);
-
-        for(Station station : this.features){
-            if(station.geometry.getCoords().getDistance(coords) < closest.geometry.getCoords().getDistance(coords)){
-                closest = station;
-            }
-        }
-        return closest;
+    public Station findClosestStation(Coordinates coordinates){
+        return this.features.stream().
+                min(Comparator.comparingDouble(station -> station.geometry.getCoords().getDistance(coordinates)))
+                .get();
     }
 
     public Map<Integer, Station> getStationMap(){
@@ -94,41 +84,69 @@ public class SubwaySystem {
         }
     }
 
-//
-    public List<StationNode> findShortestPath(SubwayGraph graph, Station start, Station end) {
 
-        List<StationNode> unvisitedStations = graph.getNodes();
-        List<StationNode> visitedStations = new ArrayList<>();
-        StationNode sourceStation = graph.map.get(start);
-        sourceStation.setDistance(0);
-        //StationNode finalStation = map.get(end);
-        visitedStations.add(sourceStation);
-        while (unvisitedStations.size() != 0) {
-            StationNode currentStation = unvisitedStations.get(unvisitedStations.size() - 1); //gets the last unvisited station
+    public List<Station> findShortestPath(SubwayLines lines, Station sourceStation, Station finalStation) {
+        final int EDGEWEIGHT = 1;
+        Map<Integer, Station> stations = this.getStationMap();
+        List<Station> unvisitedStations = this.features;
+        Map<Station, Integer> distances = new HashMap<>();
+
+        setDistances(distances, stations, sourceStation);
+        connectStations(lines, stations);
+
+        while (!unvisitedStations.isEmpty()) {
+            Station currentStation = getClosestStation(unvisitedStations, distances);
             unvisitedStations.remove(currentStation);
-            for (Map.Entry< StationNode, Integer> adjacencyPair:
-                    currentStation.getAdjacentNodes().entrySet()) {
-                StationNode adjacentNode = adjacencyPair.getKey();
-                Integer edgeWeight = adjacencyPair.getValue();
-                if (!visitedStations.contains(adjacentNode)) {
-                    calculateMinimumDistance(currentStation, adjacentNode, edgeWeight);
-                    unvisitedStations.add(adjacentNode);
+            for (Station adjacentStation : currentStation.connections) {
+                if (unvisitedStations.contains(adjacentStation)) {
+                    replaceDistances(currentStation, adjacentStation, distances, EDGEWEIGHT);
                 }
             }
-            visitedStations.add(currentStation);
+            if(currentStation.equals(finalStation)) break;
         }
-        return visitedStations;
+        return backtrackPath(distances, sourceStation, finalStation);
     }
 
-    private static void calculateMinimumDistance( StationNode sourceNode, StationNode evaluationNode, double edgeWeight)
+    private List<Station> backtrackPath(Map<Station, Integer> distances, Station sourceStation, Station finalStation) {
+        List<Station> shortestPath = new ArrayList<>();
+        Station current = finalStation;
+        while(!current.equals(sourceStation)){
+            Station shortestStation = getClosestStation(current.connections, distances);
+            shortestPath.add(shortestStation);
+            current = shortestStation;
+        }
+        Collections.reverse(shortestPath);
+        shortestPath.add(finalStation);
+        return shortestPath;
+    }
+
+    private Station getClosestStation(List<Station> unvisitedNodes, Map<Station, Integer> distances) {
+            Station lowestDistanceNode = null;
+            int lowestDistance = Integer.MAX_VALUE;
+            for (Station station : unvisitedNodes) {
+                int nodeDistance = distances.get(station);
+                if (nodeDistance < lowestDistance) {
+                    lowestDistance = nodeDistance;
+                    lowestDistanceNode = station;
+                }
+            }
+            return lowestDistanceNode;
+        }
+
+    private void setDistances(Map<Station, Integer> distances, Map<Integer, Station> stations, Station source) {
+        for(Map.Entry<Integer, Station> station : stations.entrySet()){
+            distances.put(station.getValue(), Integer.MAX_VALUE);
+        }
+        distances.put(source, 0);
+    }
+
+    private void replaceDistances(Station sourceNode, Station adjacentStation, Map<Station, Integer> distances, int edgeWeight)
     {
-        double sourceDistance = sourceNode.getDistance();
-        if (sourceDistance + edgeWeight < evaluationNode.getDistance())
+        int sourceDistance = distances.get(sourceNode);
+        int newDistance = sourceDistance + edgeWeight;
+        if (newDistance < distances.get(adjacentStation))
         {
-            evaluationNode.setDistance(sourceDistance + edgeWeight);
-            LinkedList<StationNode> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
-            shortestPath.add(sourceNode);
-            evaluationNode.setShortestPath(shortestPath);
+            distances.put(adjacentStation, newDistance);
         }
     }
 

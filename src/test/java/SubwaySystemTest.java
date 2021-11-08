@@ -80,15 +80,23 @@ public class SubwaySystemTest {
     public void findShortestPath() throws IOException {
         //given
         Gson gson = new Gson();
+        Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
         Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
+        SubwayLines lines = gson.fromJson(lineReader, SubwayLines.class);
         SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
+        lineReader.close();
         stationReader.close();
-        SubwayGraph graph = new SubwayGraph(stationList);
+        Map<Integer, SubwaySystem.Station> stations = stationList.getStationMap();
 
         //when
-        List<StationNode> connects = stationList.findShortestPath(graph, stationList.features.get(93), stationList.features.get(79));
+        List<SubwaySystem.Station> connects = stationList.findShortestPath(lines, stations.get(353),stations.get(60));
 
         //then
-        //assertEquals(3,connects.get(0).station.properties.objectid);
+        assertEquals(353,connects.get(0).properties.objectid);
+        assertEquals(348,connects.get(1).properties.objectid);
+        assertEquals(349,connects.get(2).properties.objectid);
+        assertEquals(60,connects.get(3).properties.objectid);
+
+
     }
 }
