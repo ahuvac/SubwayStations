@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -25,13 +26,13 @@ public class SubwaySystemTest {
         assertEquals("Astor Pl", stations.features.get(0).properties.name);
         assertEquals("4-6-6 Express", stations.features.get(0).properties.line);
         assertNotNull(stations.features.get(0).geometry.coordinates);
-        assertEquals(1, stations.getIDFromName("Astor Pl"));
 
     }
     @Test
     public void getLines() throws IOException {
         //given
         Gson gson = new Gson();
+
         Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
         Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
 
@@ -41,18 +42,61 @@ public class SubwaySystemTest {
         lineReader.close();
         stationReader.close();
 
+        Map<Integer, SubwaySystem.Station> stations = stationList.getStationMap();
+
+
         //when
-        stationList.connectStations(lineList);
+        stationList.connectStations(lineList, stations);
+        List<SubwaySystem.Station> connections = stationList.features.get(56).connections;
+        List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
 
         //then
-        List<SubwaySystem.Station> connections = stationList.features.get(56).getConnections();
         assertNotNull(connections);
         assertEquals(165, connections.get(0).properties.objectid);
 
-        List<SubwaySystem.Station> connections59 = stationList.features.get(93).connections;
         assertNotNull(connections59.get(0));
         assertEquals(3,connections59.get(0).properties.objectid);
 
     }
 
+
+    @Test
+    public void findClosestStation() throws IOException {
+        //given
+        Gson gson = new Gson();
+        Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
+        SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
+        stationReader.close();
+
+        //when
+        Coordinates coordinates = new Coordinates( -73.90087000018523, 40.88466700064976);
+
+        //then
+        assertEquals(6, stationList.findClosestStation(coordinates).properties.objectid);
+    }
+
+
+    @Test
+    public void findShortestPath() throws IOException {
+        //given
+        Gson gson = new Gson();
+        Reader lineReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayLines.json"));
+        Reader stationReader = Files.newBufferedReader(Paths.get("src/main/resources/SubwayStations.json"));
+        SubwayLines lines = gson.fromJson(lineReader, SubwayLines.class);
+        SubwaySystem stationList = gson.fromJson(stationReader, SubwaySystem.class);
+        lineReader.close();
+        stationReader.close();
+        Map<Integer, SubwaySystem.Station> stations = stationList.getStationMap();
+
+        //when
+        List<SubwaySystem.Station> connects = stationList.findShortestPath(lines, stations.get(353),stations.get(60));
+
+        //then
+        assertEquals(353,connects.get(0).properties.objectid);
+        assertEquals(348,connects.get(1).properties.objectid);
+        assertEquals(349,connects.get(2).properties.objectid);
+        assertEquals(60,connects.get(3).properties.objectid);
+
+
+    }
 }
